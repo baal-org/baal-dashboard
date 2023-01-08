@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "baal-dashboard"
+version = "0.1.0"
+description = "Dashboard for active learning tracking"
+authors = ["Dref360 <frederic.branchaud.charron@gmail.com>"]
+license = "Apache V2"
+
+packages = [{ include = "baal_dashboard/" },]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+fastapi = "^0.89.0"
+mlflow-skinny = "^2.1.1"
+numpy = "^1.24.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.12.0"
+flake8-black = "^0.3.6"
+mypy = "^0.991"
+isort = "^5.11.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+skip = ["__init__.py"]
+filter_files = true
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+python_version = 3.8
+show_error_codes = true
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+ignore_missing_imports = true
