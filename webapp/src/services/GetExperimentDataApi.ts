@@ -12,7 +12,7 @@ const EXP_API_URL = 'http://127.0.0.1:8000/metric';
 
 const fetchData = async (expid : string) => {
 
-  const url = `${EXP_API_URL}/${expid}`;
+  const URL = `${EXP_API_URL}/${expid}`;
 
 	const config = {
 		method: 'GET',
@@ -22,14 +22,7 @@ const fetchData = async (expid : string) => {
     },
 	};
 
-  try {
-      const response = await fetch(url,config);
-      const data = await response.json();
-      console.log(data)
-      return data;
-  } catch (error) {
-      console.log(error)
-  }
+  return await fetch(URL, config).then( response => response.json() ).catch(err => console.log(err));
   
 }
 
