@@ -31,3 +31,9 @@ Run a query manually:
 1. Go to http://0.0.0.0:8000/docs
 2. Find a run ID in `tracking`
 3. Try the `/metric` route with this run id.
+
+### Tooling
+
+1. Install precommit hooks `poetry run pre-commit install`
+   1. Run precommit manually `poetry run pre-commit run --all-files`
+2. Run formatting manually (Python): `make format`

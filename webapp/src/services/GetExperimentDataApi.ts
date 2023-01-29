@@ -1,5 +1,5 @@
 /** TODO : Change the URL to be read via config instead of hardcode */
-const EXP_API_URL = 'http://127.0.0.1:8000/metric';
+const EXP_API_URL = "http://127.0.0.1:8000/metric";
 
 /**
  * Fetches data from a metric endpoint via `fetch`.
@@ -10,20 +10,20 @@ const EXP_API_URL = 'http://127.0.0.1:8000/metric';
  * @throws {Error} - Log error in console
  */
 
-const fetchData = async (expid : string) => {
-
+const fetchData = async (expid: string) => {
   const URL = `${EXP_API_URL}/${expid}`;
 
-	const config = {
-		method: 'GET',
+  const config = {
+    method: "GET",
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
     },
-	};
+  };
 
-  return await fetch(URL, config).then( response => response.json() ).catch(err => console.log(err));
-  
-}
+  return await fetch(URL, config)
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+};
 
 export default fetchData;

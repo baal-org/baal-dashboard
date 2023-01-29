@@ -1,12 +1,13 @@
 import os
+from typing import List
 
 import mlflow
 from fastapi import FastAPI, HTTPException
-from mlflow import MlflowException
 from fastapi.middleware.cors import CORSMiddleware
+from mlflow import MlflowException
+
 from .datamodels.experiment import Experiment
 from .utils.experiment_route_utils import get_experiment_data
-from typing import List
 
 MLFLOW_TRACKING_URI = "MLFLOW_TRACKING_URI"
 
@@ -15,7 +16,7 @@ if MLFLOW_TRACKING_URI not in os.environ:
 
 mlflow.set_tracking_uri(os.environ[MLFLOW_TRACKING_URI])
 client = mlflow.MlflowClient()
- 
+
 app = FastAPI()
 
 # Add Options for CORS
@@ -32,10 +33,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
- 
-@app.get('/experiments')
+
+
+@app.get("/experiments")
 def get_experiments() -> List[Experiment]:
-    '''
+    """
     The function returns data for runs under each experiment ID. This API
     is called when the page loads for the first time
 
@@ -46,9 +48,9 @@ def get_experiments() -> List[Experiment]:
     Return:
     ----
     exp_details : Returns a List of Experiment and Run Id's
-    
-    '''
-    
+
+    """
+
     exp_details = []
 
     experiments = [exp for exp in mlflow.MlflowClient().search_experiments()]
@@ -61,6 +63,7 @@ def get_experiments() -> List[Experiment]:
         exp_details.append(exp_data)
 
     return exp_details
+
 
 @app.get("/metric/{run_id}")
 def get_metrics(run_id: str):

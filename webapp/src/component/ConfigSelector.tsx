@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import Select from 'react-select';
-import axios from 'axios';
-import ExperimentInterface from '../interfaces/ExperimentInterface';
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import axios from "axios";
+import ExperimentInterface from "../interfaces/ExperimentInterface";
 
 /**
- * ConfigSelector is a functional component that renders a select dropdown component and allows the user 
+ * ConfigSelector is a functional component that renders a select dropdown component and allows the user
  * to select a run under an experiment.
  *
  * @function ConfigSelector
@@ -22,38 +22,33 @@ import ExperimentInterface from '../interfaces/ExperimentInterface';
  * @see ExperimentInterface
  */
 
-function ConfigSelector({onSelect} : {onSelect:any}) {
-    let [experiments, setExperiments] = useState<ExperimentInterface[]>([])
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        const result = await axios(
-          '/experiments',
-        );
-  
-        setExperiments(result.data);
-      };
-  
-      fetchData();
-    }, []);
+function ConfigSelector({ onSelect }: { onSelect: any }) {
+  let [experiments, setExperiments] = useState<ExperimentInterface[]>([]);
 
-    const options = experiments.map(item => {
-      return {
-        value: item.exp_id,
-        label: item.exp_id,
-        options: item.run_ids.map(subItem => {
-          return {
-            value: subItem.run_id,
-            label: subItem.run_id
-          }
-        })
-      }
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios("/experiments");
 
-    return (
-        <Select options={options} onChange={onSelect}/>
-    )
-  }
+      setExperiments(result.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const options = experiments.map((item) => {
+    return {
+      value: item.exp_id,
+      label: item.exp_id,
+      options: item.run_ids.map((subItem) => {
+        return {
+          value: subItem.run_id,
+          label: subItem.run_id,
+        };
+      }),
+    };
+  });
+
+  return <Select options={options} onChange={onSelect} />;
+}
 
 export default ConfigSelector;
-
