@@ -1,18 +1,23 @@
-import logo from "./logo.svg";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import "./App.css";
-import SelectorComponent from "./component/SelectorComponent";
+import Sidebar from "./component/global/SideBar";
+import TopBar from "./component/global/TopBar";
+import { ColorModeContext, useMode } from "./theme";
 
 function App() {
+  const [theme, colorMode] = useMode();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <SelectorComponent />
-        <p>
-          Select an <code>Experiment ID</code> press Process.
-        </p>
-      </header>
-    </div>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+          <Sidebar />
+          <main className="content">
+            <TopBar />
+          </main>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
