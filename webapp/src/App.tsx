@@ -1,6 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
-import SelectorComponent from './component/SelectorComponent';
+import logo from "./logo.svg";
+import "./App.css";
+import SelectorComponent from "./component/SelectorComponent";
 
 function App() {
   return (

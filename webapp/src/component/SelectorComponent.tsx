@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import ConfigSelector from './ConfigSelector';
-import fetchData from '../services/GetExperimentDataApi';
+import React, { useState } from "react";
+import ConfigSelector from "./ConfigSelector";
+import fetchData from "../services/GetExperimentDataApi";
 
 /**
  * SelectorComponent is a functional component that renders a ConfigSelector component and handles the selected option.
  * @function SelectorComponent
- * @returns {React.FunctionComponent} - A functional component that renders a ConfigSelector and handles 
+ * @returns {React.FunctionComponent} - A functional component that renders a ConfigSelector and handles
  * the selected option.
  *
  * @example
@@ -17,23 +17,23 @@ import fetchData from '../services/GetExperimentDataApi';
  * @param {string} selectedOption.value - The selected option value.
  * @param {string} selectedOption.label - The selected option label.
  * @returns {Promise<Object>} - The data fetched from the endpoint.
- * 
+ *
  * @see ConfigSelector
  * @see fetchData
  */
 
 function SelectorComponent() {
-    async function handleSelect(selectedOption : {value: string, label: string}) {
+  async function handleSelect(selectedOption: {
+    value: string;
+    label: string;
+  }) {
+    const data = await fetchData(selectedOption.value);
+  }
 
-        const data = await fetchData(selectedOption.value);
-    }
-
-    return (
-        <div>
-            <ConfigSelector onSelect={handleSelect} />
-        </div>
-    )
+  return (
+    <div>
+      <ConfigSelector onSelect={handleSelect} />
+    </div>
+  );
 }
-export default SelectorComponent
-
-
+export default SelectorComponent;
