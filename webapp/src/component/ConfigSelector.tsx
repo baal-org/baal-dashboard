@@ -39,10 +39,13 @@ function ConfigSelector({ onSelect }: { onSelect: any }) {
     return {
       value: item.exp_id,
       label: item.exp_id,
-      options: item.run_ids.map((subItem) => {
+      options: item.runs.map((subItem) => {
         return {
           value: subItem.run_id,
-          label: subItem.run_id,
+          label:
+            Object.entries(subItem.hparams)
+              .map(([key, value]) => `${key}=${value}`)
+              .join(" ") + ` ${subItem.run_id}`,
         };
       }),
     };

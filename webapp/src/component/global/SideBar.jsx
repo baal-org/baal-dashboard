@@ -1,5 +1,6 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
@@ -101,14 +102,9 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Configuration
-            </Typography>
-            <SelectorComponent />
+            <MenuItem icon={<BuildOutlinedIcon />}>
+              <SelectorComponent />
+            </MenuItem>
           </Box>
         </Menu>
       </ProSidebar>
