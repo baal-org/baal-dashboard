@@ -8,7 +8,7 @@ class RunInfo(BaseModel):
     hparams: Dict[str, Any]
 
 
-class Run(BaseModel):
+class Run(RunInfo):
     metrics: Dict[str, List[float]]
 
 
