@@ -1,7 +1,8 @@
 interface ExperimentInterface {
   exp_id: number;
-  run_ids: Array<{
+  runs: Array<{
     run_id: number;
+    hparams: Record<string, any>;
   }>;
 }
 

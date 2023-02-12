@@ -1,12 +1,17 @@
-from typing import List
+from typing import Any, Dict, List
 
 from pydantic import BaseModel
 
 
-class RunId(BaseModel):
+class RunInfo(BaseModel):
     run_id: str
+    hparams: Dict[str, Any]
+
+
+class Run(BaseModel):
+    metrics: Dict[str, List[float]]
 
 
 class Experiment(BaseModel):
     exp_id: str
-    run_ids: List[RunId]
+    runs: List[RunInfo]
