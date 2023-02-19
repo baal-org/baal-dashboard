@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import Dict, List
 
 import mlflow
 from fastapi import FastAPI, HTTPException
@@ -66,7 +66,7 @@ def get_experiments() -> List[Experiment]:
 
 
 @app.get("/metric/{run_id}")
-def get_metrics(run_id: str):
+def get_metrics(run_id: str) -> Dict[str, List[float]]:
     try:
         run = mlflow.get_run(run_id)
     except MlflowException:
