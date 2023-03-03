@@ -15,7 +15,7 @@ _format:
 
 test: lint mypy
 
-LINT_FILES := baal_dashboard
+LINT_FILES := baal_dashboard scripts
 
 .PHONY: lint
 lint:
