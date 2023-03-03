@@ -34,6 +34,10 @@ def main(args):
         exp = client.get_experiment_by_name("experiment")
     run = client.create_run(exp.experiment_id)
 
+    # Log HParams (TODO Add this to baal itself)
+    client.log_param(run.info.run_id, "query_size", args.query_size)
+    client.log_param(run.info.run_id, "steps", args.steps)
+
     for step_number in range(args.steps):
         n_labelled = step_number * args.query_size
         pool_size = args.steps * args.query_size - n_labelled

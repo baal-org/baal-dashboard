@@ -1,5 +1,6 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
@@ -8,8 +9,17 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/baal-logo.png";
 import { tokens } from "../../theme";
 import SelectorComponent from "../SelectorComponent";
+import { styled } from "@mui/system";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+type ItemProps = {
+  title: string;
+  to: string;
+  icon: React.ReactNode;
+  selected: string;
+  setSelected: Function;
+};
+
+const Item = ({ title, to, icon, selected, setSelected }: ItemProps) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -30,6 +40,11 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
+  const TopMenuItem = styled(MenuItem)({
+    margin: "10px 0 20px 0",
+    color: colors.grey[100],
+  });
 
   return (
     <Box
@@ -53,11 +68,7 @@ const Sidebar = () => {
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          <MenuItem
-            sx={{
-              margin: "10px 0 20px 0",
-              color: colors.grey[100],
-            }}
+          <TopMenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
           >
@@ -77,7 +88,7 @@ const Sidebar = () => {
                 </IconButton>
               </Box>
             )}
-          </MenuItem>
+          </TopMenuItem>
           {/* USER */}
           {!isCollapsed && (
             <Box mb="25px">
@@ -101,14 +112,9 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Configuration
-            </Typography>
-            <SelectorComponent />
+            <MenuItem icon={<BuildOutlinedIcon />}>
+              <SelectorComponent />
+            </MenuItem>
           </Box>
         </Menu>
       </ProSidebar>

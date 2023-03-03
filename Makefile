@@ -1,5 +1,5 @@
 .PHONY run:
-	poetry run uvicorn baal_dashboard.app:app --reload
+	poetry run python runner.py
 
 
 
