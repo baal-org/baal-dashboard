@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import Dict, List
 
 import mlflow
 from fastapi import FastAPI, HTTPException
@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from mlflow import MlflowException
 
 from .datamodels.experiment import Experiment
+from .datamodels.metric import Metric
 from .utils.experiment_route_utils import get_experiment_data
 
 MLFLOW_TRACKING_URI = "MLFLOW_TRACKING_URI"
@@ -66,7 +67,7 @@ def get_experiments() -> List[Experiment]:
 
 
 @app.get("/metric/{run_id}")
-def get_metrics(run_id: str):
+def get_metrics(run_id: str) -> Dict[str, List[Metric]]:
     try:
         run = mlflow.get_run(run_id)
     except MlflowException:
