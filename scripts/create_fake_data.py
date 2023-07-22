@@ -4,6 +4,7 @@ import random
 
 import mlflow
 import numpy as np
+import time
 
 from baal_dashboard.tracking import TrackingStep
 
@@ -20,6 +21,7 @@ def parse_args():
     parser.add_argument("--steps", default=100)
     parser.add_argument("--query_size", default=15)
     parser.add_argument("--metrics", default=["accuracy", "f1"])
+    parser.add_argument("--delay", default=0)
     return parser.parse_args()
 
 
@@ -47,6 +49,7 @@ def main(args):
             dataset_length=n_labelled,
             pool_size=pool_size,
         ).log(run.info.run_id)
+        time.sleep(int(args.delay))
 
     print("Metrics generated")
     print("Tracking URI", os.environ[MLFLOW_TRACKING_URI])
