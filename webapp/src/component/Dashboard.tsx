@@ -7,17 +7,42 @@ import { tokens } from "../theme";
 import Header from "./global/Header";
 import LineChart from "./global/LineChart";
 import StatCard from "./global/StatCard";
+import React, {useEffect,useRef } from 'react';
 
 export const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { runId, refreshInterval } = useConfigurationContext();
+  const intervalId = useRef<any>(null);
 
-  const { runId } = useConfigurationContext();
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["metrics", runId],
-    queryFn: () => fetchMetrics(runId),
-    enabled: Boolean(runId),
-  });
+  const { isLoading, isError, data, error,refetch} = useQuery({
+                    queryKey: ["metrics", runId],
+                    queryFn: () => fetchMetrics(runId),
+                    enabled: Boolean(runId)
+                  })
+
+  // Refetch data
+  useEffect(() => {
+
+    if(Number(refreshInterval) > 0 && runId!== null){
+      
+      clearInterval(intervalId.current);
+
+      intervalId.current = setInterval(() => {
+        refetch();  
+        console.log("Calling refetch()")
+        console.log(runId)
+      }, Number(refreshInterval) * 1000); 
+    }
+    else {
+      clearInterval(intervalId.current);
+      intervalId.current = null;
+    }
+
+    return () => {
+      clearInterval(intervalId.current);
+      };
+  }, [refreshInterval, runId, refetch]);
 
   // TODO The backend should do this split probably.
   const dataset_metrics = Object.entries(data || {}).filter(([k, v]) => {

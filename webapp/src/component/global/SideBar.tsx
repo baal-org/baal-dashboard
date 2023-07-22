@@ -1,6 +1,7 @@
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Menu, MenuItem, ProSidebar } from "react-pro-sidebar";
@@ -9,6 +10,7 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/baal-logo.png";
 import { tokens } from "../../theme";
 import SelectorComponent from "../SelectorComponent";
+import RefreshDataComponent from "../RefreshDataComponent";
 import { styled } from "@mui/system";
 
 type ItemProps = {
@@ -114,6 +116,9 @@ const Sidebar = () => {
             />
             <MenuItem icon={<BuildOutlinedIcon />}>
               <SelectorComponent />
+            </MenuItem>
+            <MenuItem icon={<AccessTimeIcon />}>
+              <RefreshDataComponent />
             </MenuItem>
           </Box>
         </Menu>
