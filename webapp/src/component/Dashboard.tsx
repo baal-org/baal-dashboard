@@ -18,7 +18,8 @@ export const Dashboard = () => {
   const { isLoading, isError, data, error,refetch} = useQuery({
                     queryKey: ["metrics", runId],
                     queryFn: () => fetchMetrics(runId),
-                    enabled: Boolean(runId)
+                    enabled: Boolean(runId),
+                    refetchOnWindowFocus: false
                   })
 
   // Refetch data
@@ -30,8 +31,6 @@ export const Dashboard = () => {
 
       intervalId.current = setInterval(() => {
         refetch();  
-        console.log("Calling refetch()")
-        console.log(runId)
       }, Number(refreshInterval) * 1000); 
     }
     else {

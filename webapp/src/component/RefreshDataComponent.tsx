@@ -64,7 +64,7 @@ export default function RefreshDataComponent() {
   return (
     <div>
       <Button onClick={handleOpen} color="secondary">
-        Select Run
+        Select Refresh Time
       </Button>
       <Modal
         open={open}
@@ -79,7 +79,7 @@ export default function RefreshDataComponent() {
             component="h2"
             color={colors.grey[300]}
           >
-            Select a Metric Refresh Interval
+            Select Data Refresh Interval
           </Typography>
           <Box id="modal-modal-description" sx={{ mt: 2 }}>
             <Select onChange={handleSelect} value={refreshInterval}>
