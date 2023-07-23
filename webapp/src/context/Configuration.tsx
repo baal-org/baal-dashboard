@@ -3,8 +3,8 @@ import React, { createContext, useContext, useState } from "react";
 interface ConfigurationContextValue {
   runId: string | null;
   setRunId: React.Dispatch<React.SetStateAction<string | null>>;
-  refreshInterval: string | undefined;
-  setrRefreshInterval: React.Dispatch<React.SetStateAction<string | undefined>>;
+  refreshInterval: number | null;
+  setRefreshInterval: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 // create config context
@@ -13,8 +13,8 @@ const ConfigurationContext = createContext<ConfigurationContextValue>({
   setRunId: (runId) => {
     return null;
   },
-  refreshInterval: undefined,
-  setrRefreshInterval: (refreshTime) => {
+  refreshInterval: null,
+  setRefreshInterval: (refreshTime) => {
     return null;
   },
 });
@@ -25,11 +25,11 @@ type ConfigurationProps = {
 // create context provider
 export const ConfigurationProvider = ({ children }: ConfigurationProps) => {
   const [runId, setRunId] = useState<string | null>(null);
-  const [refreshInterval, setrRefreshInterval] = useState<string | undefined>("0");
+  const [refreshInterval, setRefreshInterval] = useState<number | null>(0);
   // the value passed in here will be accessible anywhere in our application
   // you can pass any value, in our case we pass our state and it's update method
   return (
-    <ConfigurationContext.Provider value={{ runId, setRunId, refreshInterval, setrRefreshInterval}}>
+    <ConfigurationContext.Provider value={{ runId, setRunId, refreshInterval, setRefreshInterval}}>
       {children}
     </ConfigurationContext.Provider>
   );

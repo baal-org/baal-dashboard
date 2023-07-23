@@ -29,7 +29,7 @@ import MenuItem from '@mui/material/MenuItem';
 export default function RefreshDataComponent() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { refreshInterval, setrRefreshInterval } = useConfigurationContext();
+  const { refreshInterval, setRefreshInterval } = useConfigurationContext();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -47,7 +47,7 @@ export default function RefreshDataComponent() {
   };
 
   function handleSelect(event:SelectChangeEvent) {
-    setrRefreshInterval(String(event.target.value));   
+    setRefreshInterval(Number(event.target.value));   
   }
 
   const options = [
@@ -82,7 +82,7 @@ export default function RefreshDataComponent() {
             Select Data Refresh Interval
           </Typography>
           <Box id="modal-modal-description" sx={{ mt: 2 }}>
-            <Select onChange={handleSelect} value={refreshInterval}>
+            <Select onChange={handleSelect} value={String(refreshInterval)}>
                 {options.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
