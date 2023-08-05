@@ -13,12 +13,13 @@ import React, { useEffect, useRef } from "react";
 export const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { runId, refreshInterval } = useConfigurationContext();
+  const { runId, refreshInterval, mlflowTrackingURI } =
+    useConfigurationContext();
   const intervalId = useRef<any>(null);
 
   const { isLoading, isError, data, error, refetch } = useQuery({
     queryKey: ["metrics", runId],
-    queryFn: () => fetchMetrics(runId),
+    queryFn: () => fetchMetrics(mlflowTrackingURI, runId),
     enabled: Boolean(runId),
     refetchOnWindowFocus: false,
   });

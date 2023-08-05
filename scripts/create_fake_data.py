@@ -1,10 +1,10 @@
 import argparse
 import os
 import random
+import time
 
 import mlflow
 import numpy as np
-import time
 
 from baal_dashboard.tracking import TrackingStep
 

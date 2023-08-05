@@ -5,6 +5,8 @@ interface ConfigurationContextValue {
   setRunId: React.Dispatch<React.SetStateAction<string | null>>;
   refreshInterval: number | null;
   setRefreshInterval: React.Dispatch<React.SetStateAction<number | null>>;
+  mlflowTrackingURI: string | null;
+  setMlflowTrackingURI: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 // create config context
@@ -17,6 +19,10 @@ const ConfigurationContext = createContext<ConfigurationContextValue>({
   setRefreshInterval: (refreshTime) => {
     return null;
   },
+  mlflowTrackingURI: null,
+  setMlflowTrackingURI: (mlflowTrackingURI) => {
+    return null;
+  },
 });
 
 type ConfigurationProps = {
@@ -26,11 +32,21 @@ type ConfigurationProps = {
 export const ConfigurationProvider = ({ children }: ConfigurationProps) => {
   const [runId, setRunId] = useState<string | null>(null);
   const [refreshInterval, setRefreshInterval] = useState<number | null>(0);
+  const [mlflowTrackingURI, setMlflowTrackingURI] = useState<string | null>(
+    null,
+  );
   // the value passed in here will be accessible anywhere in our application
   // you can pass any value, in our case we pass our state and it's update method
   return (
     <ConfigurationContext.Provider
-      value={{ runId, setRunId, refreshInterval, setRefreshInterval }}
+      value={{
+        runId,
+        setRunId,
+        refreshInterval,
+        setRefreshInterval,
+        mlflowTrackingURI,
+        setMlflowTrackingURI,
+      }}
     >
       {children}
     </ConfigurationContext.Provider>

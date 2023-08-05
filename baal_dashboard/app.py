@@ -3,7 +3,7 @@ import os
 from typing import List
 
 import mlflow
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from mlflow import MlflowException
 
@@ -14,12 +14,6 @@ from .utils.plotting import create_plots
 
 MLFLOW_TRACKING_URI = "MLFLOW_TRACKING_URI"
 
-if MLFLOW_TRACKING_URI not in os.environ:
-    raise EnvironmentError(f"Please set `{MLFLOW_TRACKING_URI}` as an env.")
-
-mlflow.set_tracking_uri(os.environ[MLFLOW_TRACKING_URI])
-client = mlflow.MlflowClient()
-
 app = FastAPI()
 
 # Add Options for CORS
@@ -28,6 +22,17 @@ app = FastAPI()
 origins = [
     "*",
 ]
+
+
+def get_mlflow_client(mlflow_tracking_uri: str = Query(None)):
+    if mlflow_tracking_uri is None and os.getenv(MLFLOW_TRACKING_URI) is None:
+        raise EnvironmentError(
+            f"Please set `{MLFLOW_TRACKING_URI}` as an env or send it from the frontend."
+        )
+    uri = mlflow_tracking_uri or os.getenv(MLFLOW_TRACKING_URI)
+    mlflow.set_tracking_uri(uri)
+    return mlflow.MlflowClient()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,7 +44,7 @@ app.add_middleware(
 
 
 @app.get("/experiments")
-def get_experiments() -> List[Experiment]:
+def get_experiments(client=Depends(get_mlflow_client)) -> List[Experiment]:
     """
     The function returns data for runs under each experiment ID. This API
     is called when the page loads for the first time
@@ -56,7 +61,7 @@ def get_experiments() -> List[Experiment]:
 
     exp_details = []
 
-    experiments = [exp for exp in mlflow.MlflowClient().search_experiments()]
+    experiments = [exp for exp in client.search_experiments()]
 
     # Iterate through each experiment
     for exp in experiments:
@@ -68,7 +73,9 @@ def get_experiments() -> List[Experiment]:
 
 
 @app.get("/metric/{run_id}")
-def get_metrics(run_id: str, with_plots: bool = Query(False)) -> GetMetricsResponse:
+def get_metrics(
+    run_id: str, with_plots: bool = Query(False), client=Depends(get_mlflow_client)
+) -> GetMetricsResponse:
     try:
         run = mlflow.get_run(run_id)
     except MlflowException:
