@@ -6,8 +6,8 @@ import Modal from "@mui/material/Modal";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { useConfigurationContext } from "../context/Configuration";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 /**
  * SelectorComponent is a functional component that renders a ConfigSelector component and handles the selected option.
@@ -46,19 +46,19 @@ export default function RefreshDataComponent() {
     p: 4,
   };
 
-  function handleSelect(event:SelectChangeEvent) {
-    setRefreshInterval(Number(event.target.value));   
+  function handleSelect(event: SelectChangeEvent) {
+    setRefreshInterval(Number(event.target.value));
   }
 
   const options = [
-    { value: 0, label: 'No Update' },
-    { value: 1, label: '1 sec' },
-    { value: 5, label: '5 sec' },
-    { value: 10, label: '10 sec' },
-    { value: 30, label: '30 sec' },
-    { value: 60, label: '1 min' },
-    { value: 120, label: '2 min' },
-    { value: 300, label: '5 min' },
+    { value: 0, label: "No Update" },
+    { value: 1, label: "1 sec" },
+    { value: 5, label: "5 sec" },
+    { value: 10, label: "10 sec" },
+    { value: 30, label: "30 sec" },
+    { value: 60, label: "1 min" },
+    { value: 120, label: "2 min" },
+    { value: 300, label: "5 min" },
   ];
 
   return (
@@ -83,12 +83,12 @@ export default function RefreshDataComponent() {
           </Typography>
           <Box id="modal-modal-description" sx={{ mt: 2 }}>
             <Select onChange={handleSelect} value={String(refreshInterval)}>
-                {options.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem >
-                ))}
-            </Select >
+              {options.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
           </Box>
         </Box>
       </Modal>
