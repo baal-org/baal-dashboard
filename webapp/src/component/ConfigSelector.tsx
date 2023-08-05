@@ -7,11 +7,12 @@ import {
   useTheme,
 } from "@mui/material";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import ExperimentInterface from "../interfaces/ExperimentInterface";
 import { tokens } from "../theme";
+import { useConfigurationContext } from "../context/Configuration";
 
 /**
  * ConfigSelector is a functional component that renders a select dropdown component and allows the user
@@ -40,12 +41,20 @@ const ErrorBox = styled(Box)({
 function ConfigSelector({ onSelect }: { onSelect: any }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { mlflowTrackingURI } = useConfigurationContext();
 
-  const { isLoading, isError, data, error } = useQuery({
+  const { isLoading, isError, data, error, refetch } = useQuery({
     queryKey: [],
-    queryFn: () => axios.get("/experiments").then((res) => res.data),
+    queryFn: () =>
+      axios
+        .get(`/experiments?mlflow_tracking_uri=${mlflowTrackingURI}`)
+        .then((res) => res.data),
     enabled: true,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [mlflowTrackingURI]);
 
   if (isLoading) {
     return (

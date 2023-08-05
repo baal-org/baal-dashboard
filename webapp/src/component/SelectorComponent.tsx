@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useTheme } from "@mui/material";
+import { TextField, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { useConfigurationContext } from "../context/Configuration";
 
@@ -31,7 +31,8 @@ import { useConfigurationContext } from "../context/Configuration";
 export default function SelectorComponent() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { setRunId } = useConfigurationContext();
+  const { setRunId, setMlflowTrackingURI, mlflowTrackingURI } =
+    useConfigurationContext();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -48,11 +49,15 @@ export default function SelectorComponent() {
     p: 4,
   };
 
-  async function handleSelect(selectedOption: {
+  async function handleExperimentSelect(selectedOption: {
     value: string;
     label: string;
   }) {
     setRunId(selectedOption.value);
+  }
+
+  function handleMlFlowSelect(mlflow_uri: string) {
+    setMlflowTrackingURI(mlflow_uri);
   }
 
   return (
@@ -73,10 +78,19 @@ export default function SelectorComponent() {
             component="h2"
             color={colors.grey[300]}
           >
-            Select a configuration
+            Settings
           </Typography>
           <Box id="modal-modal-description" sx={{ mt: 2 }}>
-            <ConfigSelector onSelect={handleSelect} />
+            <Typography>Enter your MlFlow Id</Typography>
+            <TextField
+              id="standard-basic"
+              label="MlFlow URI"
+              variant="standard"
+              onChange={(event) => handleMlFlowSelect(event.target.value)}
+              defaultValue={mlflowTrackingURI}
+            />
+            <Typography>Select a run</Typography>
+            <ConfigSelector onSelect={handleExperimentSelect} />
           </Box>
         </Box>
       </Modal>
