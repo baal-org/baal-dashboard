@@ -6,7 +6,7 @@ type MetricProps = {
 };
 
 type MetricResponse = {
-  history: Record<string, Array<MetricProps>>;
+  history: Record<string,Record<string, Array<MetricProps>>>;
   plots: Array<any>;
 };
 

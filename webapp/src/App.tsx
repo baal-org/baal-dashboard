@@ -5,6 +5,7 @@ import TopBar from "./component/global/TopBar";
 import { ColorModeContext, useMode } from "./theme";
 import { ConfigurationProvider } from "./context/Configuration";
 import { Dashboard } from "./component/Dashboard";
+import {ExperimentTable} from "./component/ExperimentTable";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <main className="content">
                 <TopBar />
                 <Dashboard />
+                <ExperimentTable />
               </main>
             </div>
           </ConfigurationProvider>

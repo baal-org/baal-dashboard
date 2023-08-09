@@ -13,19 +13,19 @@ import React, { useEffect, useRef } from "react";
 export const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { runId, refreshInterval } = useConfigurationContext();
+  const { runId, refreshInterval, runIdArr } = useConfigurationContext();
   const intervalId = useRef<any>(null);
 
   const { isLoading, isError, data, error, refetch } = useQuery({
-    queryKey: ["metrics", runId],
-    queryFn: () => fetchMetrics(runId),
-    enabled: Boolean(runId),
+    queryKey: ["metrics", runIdArr],
+    queryFn: () => fetchMetrics(runIdArr.join('--')),
+    enabled: runIdArr.length > 0,
     refetchOnWindowFocus: false,
   });
 
   // Refetch data
   useEffect(() => {
-    if (Number(refreshInterval) > 0 && runId !== null) {
+    if (Number(refreshInterval) > 0 && runIdArr.length > 0) {
       clearInterval(intervalId.current);
 
       intervalId.current = setInterval(
@@ -42,7 +42,7 @@ export const Dashboard = () => {
     return () => {
       clearInterval(intervalId.current);
     };
-  }, [refreshInterval, runId, refetch]);
+  }, [refreshInterval, runIdArr, refetch]);
 
   const DashboardCardRow = styled(Box)({
     gridColumn: "span 8",
@@ -66,7 +66,7 @@ export const Dashboard = () => {
     backgroundColor: colors.primary[400],
   });
 
-  if (isError || runId === null) {
+  if (isError || runIdArr.length == 0) {
     return (
       <Box m="20px">
         <Typography variant="h2">Please select a Run to analyse</Typography>
@@ -82,6 +82,8 @@ export const Dashboard = () => {
     );
   }
 
+  console.log(data)
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -95,12 +97,26 @@ export const Dashboard = () => {
         gap="20px"
       >
         {/* Row number one (Cards) */}
-        <DashboardCardRow display="flex">
+        {/* <DashboardCardRow display="flex">
           {!_.isEmpty(data.history) &&
             Object.entries(data.history).map(([key, value]) => {
               return (
                 <StatCard title={key} value={value[value.length - 1].value} />
               );
+            })}
+        </DashboardCardRow> */}
+        <DashboardCardRow display="flex">
+          {!_.isEmpty(data.history) &&
+            Object.entries(data.history).flatMap(([experimentId, metrics]) => {
+              return Object.entries(metrics).map(([metricName, metricValues]) => {
+                const latestMetricValue = metricValues[metricValues.length - 1].value;
+                return (
+                  <StatCard
+                    title={experimentId + ' - ' + metricName} // Display experiment ID and metric name
+                    value={latestMetricValue}
+                  />
+                );
+              });
             })}
         </DashboardCardRow>
         {/*Row number two */}
