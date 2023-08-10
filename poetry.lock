@@ -3,7 +3,7 @@ name = "aiohttp"
 version = "3.8.4"
 description = "Async http client/server framework (asyncio)"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -23,7 +23,7 @@ name = "aiosignal"
 version = "1.3.1"
 description = "aiosignal: a list of registered asynchronous callbacks"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -51,7 +51,7 @@ name = "async-timeout"
 version = "4.0.2"
 description = "Timeout context manager for asyncio programs"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -59,7 +59,7 @@ name = "attrs"
 version = "22.2.0"
 description = "Classes Without Boilerplate"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.extras]
@@ -72,15 +72,15 @@ tests_no_zope = ["hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist", "c
 
 [[package]]
 name = "baal"
-version = "1.7.0"
+version = "1.8.0"
 description = "Library to enable Bayesian active learning in your research or labeling work."
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.8,<4"
 
 [package.dependencies]
 h5py = ">=3.4.0,<4.0.0"
-lightning-flash = {version = ">=0.7.5,<0.8.0", optional = true, markers = "extra == \"vision\""}
+lightning-flash = {version = ">=0.7.5", optional = true, markers = "extra == \"vision\""}
 matplotlib = ">=3.4.3,<4.0.0"
 numpy = ">=1.21.2,<2.0.0"
 Pillow = ">=6.2.0"
@@ -93,8 +93,8 @@ torchvision = {version = ">=0.7.0", optional = true, markers = "extra == \"visio
 tqdm = ">=4.62.2,<5.0.0"
 
 [package.extras]
-vision = ["torchvision (>=0.7.0)", "lightning-flash (>=0.7.5,<0.8.0)"]
-nlp = ["transformers (>=4.10.2,<5.0.0)", "datasets (>=1.11.0,<2.0.0)"]
+vision = ["torchvision (>=0.7.0)", "lightning-flash (>=0.7.5)"]
+nlp = ["transformers (>=4.10.2)", "datasets (>=1.11.0)"]
 
 [[package]]
 name = "black"
@@ -174,7 +174,7 @@ name = "contourpy"
 version = "1.0.7"
 description = "Python library for calculating contours of 2D quadrilateral grids"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.8"
 
 [package.dependencies]
@@ -192,7 +192,7 @@ name = "cycler"
 version = "0.11.0"
 description = "Composable style cycles"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -224,7 +224,7 @@ name = "docstring-parser"
 version = "0.15"
 description = "Parse Python docstrings in reST, Google and Numpydoc format"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6,<4.0"
 
 [[package]]
@@ -299,7 +299,7 @@ name = "fonttools"
 version = "4.38.0"
 description = "Tools to manipulate font files"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.extras]
@@ -321,16 +321,16 @@ name = "frozenlist"
 version = "1.3.3"
 description = "A list-like structure which implements collections.abc.MutableSequence"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [[package]]
 name = "fsspec"
-version = "2023.1.0"
+version = "2023.6.0"
 description = "File-system specification"
 category = "dev"
-optional = false
-python-versions = ">=3.7"
+optional = true
+python-versions = ">=3.8"
 
 [package.dependencies]
 aiohttp = {version = "<4.0.0a0 || >4.0.0a0,<4.0.0a1 || >4.0.0a1", optional = true, markers = "extra == \"http\""}
@@ -341,8 +341,9 @@ abfs = ["adlfs"]
 adl = ["adlfs"]
 arrow = ["pyarrow (>=1)"]
 dask = ["dask", "distributed"]
+devel = ["pytest", "pytest-cov"]
 dropbox = ["dropboxdrivefs", "requests", "dropbox"]
-entrypoints = ["importlib-metadata"]
+full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "dask", "distributed", "dropbox", "dropboxdrivefs", "fusepy", "gcsfs", "libarchive-c", "ocifs", "panel", "paramiko", "pyarrow (>=1)", "pygit2", "requests", "s3fs", "smbprotocol", "tqdm"]
 fuse = ["fusepy"]
 gcs = ["gcsfs"]
 git = ["pygit2"]
@@ -394,7 +395,7 @@ name = "h5py"
 version = "3.8.0"
 description = "Read and write HDF5 files from Python"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -451,7 +452,7 @@ name = "importlib-resources"
 version = "5.12.0"
 description = "Read resources from Python packages"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -480,41 +481,43 @@ name = "joblib"
 version = "1.2.0"
 description = "Lightweight pipelining with Python functions"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [[package]]
 name = "jsonargparse"
-version = "4.20.0"
+version = "4.23.1"
 description = "Implement minimal boilerplate CLIs derived from type hints and parse from command line, config files and environment variables."
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
 docstring-parser = {version = ">=0.15", optional = true, markers = "extra == \"signatures\""}
+jsonargparse = {version = "*", extras = ["typing-extensions"], optional = true, markers = "extra == \"signatures\""}
 PyYAML = ">=3.13"
 typeshed-client = {version = ">=2.1.0", optional = true, markers = "extra == \"signatures\""}
+typing-extensions = {version = ">=3.10.0.0", optional = true, markers = "python_version < \"3.10\" and extra == \"typing-extensions\""}
 
 [package.extras]
-all = ["docstring-parser (>=0.15)", "typeshed-client (>=2.1.0)", "jsonschema (>=3.2.0)", "requests (>=2.18.4)", "fsspec (>=0.8.4)", "argcomplete (>=2.0.0)", "ruyaml (>=0.20.0)", "omegaconf (>=2.1.1)", "reconplogger (>=4.4.0)", "jsonnet-binary (>=0.17.0)", "jsonnet (>=0.13.0)", "typing-extensions (>=3.10.0.0)"]
+all = ["jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse"]
 argcomplete = ["argcomplete (>=2.0.0)"]
-dev = ["coverage (>=4.5.1)", "types-PyYAML (>=6.0.11)", "responses (>=0.12.0)", "types-requests (>=2.28.9)", "Sphinx (>=1.7.9)", "sphinx-rtd-theme (>=0.4.3)", "autodocsumm (>=0.1.10)", "sphinx-autodoc-typehints (>=1.19.5)", "pylint (>=2.15.6)", "mypy (>=0.701)", "pre-commit (>=2.19.0)", "tox (>=3.25.0)", "pycodestyle (>=2.5.0)"]
-doc = ["Sphinx (>=1.7.9)", "sphinx-rtd-theme (>=0.4.3)", "autodocsumm (>=0.1.10)", "sphinx-autodoc-typehints (>=1.19.5)"]
+coverage = ["jsonargparse", "pytest-cov (>=4.0.0)"]
+dev = ["jsonargparse", "jsonargparse", "jsonargparse", "jsonargparse", "pre-commit (>=2.19.0)", "tox (>=3.25.0)", "build (>=0.10.0)"]
+doc = ["Sphinx (>=1.7.9)", "sphinx-rtd-theme (>=1.2.2)", "autodocsumm (>=0.1.10)", "sphinx-autodoc-typehints (>=1.19.5)"]
 fsspec = ["fsspec (>=0.8.4)"]
 jsonnet = ["jsonnet-binary (>=0.17.0)", "jsonnet (>=0.13.0)"]
 jsonschema = ["jsonschema (>=3.2.0)"]
-maintainer = ["bump2version (>=0.5.11)"]
-mypy = ["types-PyYAML (>=6.0.11)", "mypy (>=0.701)"]
+maintainer = ["bump2version (>=0.5.11)", "twine (>=4.0.2)"]
+mypy = ["jsonargparse", "mypy (>=0.701)"]
 omegaconf = ["omegaconf (>=2.1.1)"]
-pylint = ["pylint (>=2.15.6)"]
 reconplogger = ["reconplogger (>=4.4.0)"]
 ruyaml = ["ruyaml (>=0.20.0)"]
-signatures = ["docstring-parser (>=0.15)", "typeshed-client (>=2.1.0)"]
-test = ["coverage (>=4.5.1)", "types-PyYAML (>=6.0.11)", "responses (>=0.12.0)", "types-requests (>=2.28.9)"]
-test_no_urls = ["coverage (>=4.5.1)"]
-types_pyyaml = ["types-PyYAML (>=6.0.11)"]
-typing_extensions = ["typing-extensions (>=3.10.0.0)"]
+signatures = ["jsonargparse", "docstring-parser (>=0.15)", "typeshed-client (>=2.1.0)"]
+test = ["jsonargparse", "jsonargparse", "responses (>=0.12.0)", "types-requests (>=2.28.9)", "attrs (>=22.2.0)", "pydantic (>=1.10.7,<2.0.0)"]
+test-no-urls = ["pytest (>=6.2.5)", "pytest-subtests (>=0.8.0)"]
+types-pyyaml = ["types-PyYAML (>=6.0.11)"]
+typing-extensions = ["typing-extensions (>=3.10.0.0)"]
 urls = ["requests (>=2.18.4)"]
 
 [[package]]
@@ -522,7 +525,7 @@ name = "kiwisolver"
 version = "1.4.4"
 description = "A fast implementation of the Cassowary constraint solver"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [[package]]
@@ -530,7 +533,7 @@ name = "lightning-flash"
 version = "0.7.5"
 description = "Your PyTorch AI Factory - Flash enables you to easily configure and run complex AI recipes."
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.dependencies]
@@ -569,7 +572,7 @@ name = "lightning-utilities"
 version = "0.7.1"
 description = "PyTorch Lightning Sample project."
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -587,7 +590,7 @@ name = "matplotlib"
 version = "3.7.0"
 description = "Python plotting package"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.8"
 
 [package.dependencies]
@@ -643,7 +646,7 @@ name = "multidict"
 version = "6.0.4"
 description = "multidict implementation"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [[package]]
@@ -694,7 +697,7 @@ name = "nvidia-cublas-cu11"
 version = "11.10.3.66"
 description = "CUBLAS native runtime libraries"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3"
 
 [[package]]
@@ -702,7 +705,7 @@ name = "nvidia-cuda-nvrtc-cu11"
 version = "11.7.99"
 description = "NVRTC native runtime libraries"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3"
 
 [[package]]
@@ -710,7 +713,7 @@ name = "nvidia-cuda-runtime-cu11"
 version = "11.7.99"
 description = "CUDA Runtime native Libraries"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3"
 
 [[package]]
@@ -718,7 +721,7 @@ name = "nvidia-cudnn-cu11"
 version = "8.5.0.96"
 description = "cuDNN runtime libraries"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3"
 
 [[package]]
@@ -775,7 +778,7 @@ name = "pillow"
 version = "9.4.0"
 description = "Python Imaging Library (Fork)"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.extras]
@@ -793,6 +796,18 @@ python-versions = ">=3.7"
 [package.extras]
 docs = ["furo (>=2022.12.7)", "proselint (>=0.13)", "sphinx-autodoc-typehints (>=1.22,!=1.23.4)", "sphinx (>=6.1.3)"]
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.2.2)", "pytest-cov (>=4)", "pytest-mock (>=3.10)", "pytest (>=7.2.1)"]
+
+[[package]]
+name = "plotly"
+version = "5.15.0"
+description = "An open-source, interactive data visualization library for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+packaging = "*"
+tenacity = ">=6.2.0"
 
 [[package]]
 name = "pre-commit"
@@ -845,7 +860,7 @@ name = "pydeprecate"
 version = "0.3.2"
 description = "Deprecation tooling"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -875,7 +890,7 @@ name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6.8"
 
 [package.extras]
@@ -908,7 +923,7 @@ name = "pytorch-lightning"
 version = "1.9.3"
 description = "PyTorch Lightning is the lightweight PyTorch wrapper for ML researchers. Scale your models. Write less boilerplate."
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -974,7 +989,7 @@ name = "scikit-learn"
 version = "1.2.1"
 description = "A set of python modules for machine learning and data mining"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.8"
 
 [package.dependencies]
@@ -994,7 +1009,7 @@ name = "scipy"
 version = "1.9.3"
 description = "Fundamental algorithms for scientific computing in Python"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.8"
 
 [package.dependencies]
@@ -1010,7 +1025,7 @@ name = "setuptools-scm"
 version = "7.1.0"
 description = "the blessed package to manage your versions by scm tags"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1074,7 +1089,7 @@ name = "structlog"
 version = "21.5.0"
 description = "Structured Logging for Python"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [package.extras]
@@ -1094,11 +1109,22 @@ python-versions = ">=3.7"
 widechars = ["wcwidth"]
 
 [[package]]
+name = "tenacity"
+version = "8.2.2"
+description = "Retry code until it succeeds"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+doc = ["reno", "sphinx", "tornado (>=4.5)"]
+
+[[package]]
 name = "threadpoolctl"
 version = "3.1.0"
 description = "threadpoolctl"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.6"
 
 [[package]]
@@ -1114,7 +1140,7 @@ name = "torch"
 version = "1.13.1"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7.0"
 
 [package.dependencies]
@@ -1132,7 +1158,7 @@ name = "torchmetrics"
 version = "0.9.3"
 description = "PyTorch native Metrics"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1155,7 +1181,7 @@ name = "torchvision"
 version = "0.14.1"
 description = "image and video datasets and models for torch deep learning"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1173,7 +1199,7 @@ name = "tqdm"
 version = "4.64.1"
 description = "Fast, Extensible Progress Meter"
 category = "dev"
-optional = false
+optional = true
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 
 [package.dependencies]
@@ -1190,7 +1216,7 @@ name = "typeshed-client"
 version = "2.2.0"
 description = "A library for accessing stubs in typeshed."
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1293,7 +1319,7 @@ name = "yarl"
 version = "1.8.2"
 description = "Yet another URL library"
 category = "dev"
-optional = false
+optional = true
 python-versions = ">=3.7"
 
 [package.dependencies]
@@ -1312,10 +1338,13 @@ python-versions = ">=3.7"
 docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pytest-flake8"]
 
+[extras]
+full = []
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "479d43c480dbeeb8ce1640249cc612afbdacf35e4da4396be2e33db12e3ac3a9"
+content-hash = "c4bcbf5dfbf105c0e8be12a1dccfc5dc07bba0e5487b12bb6d513e42593d71c7"
 
 [metadata.files]
 aiohttp = []
@@ -1377,6 +1406,7 @@ pandas = []
 pathspec = []
 pillow = []
 platformdirs = []
+plotly = []
 pre-commit = []
 protobuf = []
 pycodestyle = []
@@ -1401,6 +1431,7 @@ sqlparse = []
 starlette = []
 structlog = []
 tabulate = []
+tenacity = []
 threadpoolctl = []
 tomli = []
 torch = []

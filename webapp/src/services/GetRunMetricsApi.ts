@@ -5,10 +5,15 @@ type MetricProps = {
   value: number;
 };
 
-type MetricResponse = Record<string, Array<MetricProps>>;
+type MetricResponse = {
+  history: Record<string, Array<MetricProps>>;
+  plots: Array<any>;
+};
 
 const fetchMetrics = (runId: string | null): Promise<MetricResponse> => {
-  return axios.get(`metric/${runId}`).then((response) => response.data);
+  return axios
+    .get(`metric/${runId}?with_plots=true`)
+    .then((response) => response.data);
 };
 
 export default fetchMetrics;

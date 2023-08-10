@@ -29,7 +29,9 @@ export const ConfigurationProvider = ({ children }: ConfigurationProps) => {
   // the value passed in here will be accessible anywhere in our application
   // you can pass any value, in our case we pass our state and it's update method
   return (
-    <ConfigurationContext.Provider value={{ runId, setRunId, refreshInterval, setRefreshInterval}}>
+    <ConfigurationContext.Provider
+      value={{ runId, setRunId, refreshInterval, setRefreshInterval }}
+    >
       {children}
     </ConfigurationContext.Provider>
   );

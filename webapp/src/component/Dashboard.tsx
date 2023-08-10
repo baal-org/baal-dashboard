@@ -5,9 +5,10 @@ import { useConfigurationContext } from "../context/Configuration";
 import fetchMetrics from "../services/GetRunMetricsApi";
 import { tokens } from "../theme";
 import Header from "./global/Header";
-import LineChart from "./global/LineChart";
+import PlotWrapper from "./global/PlotWrapper";
 import StatCard from "./global/StatCard";
-import React, {useEffect,useRef } from 'react';
+import _ from "lodash";
+import React, { useEffect, useRef } from "react";
 
 export const Dashboard = () => {
   const theme = useTheme();
@@ -15,41 +16,33 @@ export const Dashboard = () => {
   const { runId, refreshInterval } = useConfigurationContext();
   const intervalId = useRef<any>(null);
 
-  const { isLoading, isError, data, error,refetch} = useQuery({
-                    queryKey: ["metrics", runId],
-                    queryFn: () => fetchMetrics(runId),
-                    enabled: Boolean(runId),
-                    refetchOnWindowFocus: false
-                  })
+  const { isLoading, isError, data, error, refetch } = useQuery({
+    queryKey: ["metrics", runId],
+    queryFn: () => fetchMetrics(runId),
+    enabled: Boolean(runId),
+    refetchOnWindowFocus: false,
+  });
 
   // Refetch data
   useEffect(() => {
-
-    if(Number(refreshInterval) > 0 && runId!== null){
-      
+    if (Number(refreshInterval) > 0 && runId !== null) {
       clearInterval(intervalId.current);
 
-      intervalId.current = setInterval(() => {
-        refetch();  
-      }, Number(refreshInterval) * 1000); 
-    }
-    else {
+      intervalId.current = setInterval(
+        () => {
+          refetch();
+        },
+        Number(refreshInterval) * 1000,
+      );
+    } else {
       clearInterval(intervalId.current);
       intervalId.current = null;
     }
 
     return () => {
       clearInterval(intervalId.current);
-      };
+    };
   }, [refreshInterval, runId, refetch]);
-
-  // TODO The backend should do this split probably.
-  const dataset_metrics = Object.entries(data || {}).filter(([k, v]) => {
-    return k.includes("pool");
-  });
-  const performance_metrics = Object.entries(data || {}).filter(([k, v]) => {
-    return !k.includes("pool");
-  });
 
   const DashboardCardRow = styled(Box)({
     gridColumn: "span 8",
@@ -59,7 +52,17 @@ export const Dashboard = () => {
 
   const DashboardPlotRow = styled(Box)({
     gridColumn: "span 8",
-    gridRow: "span 3",
+    gridRow: "span 6",
+    flexFlow: "wrap",
+    alignContent: "baseline",
+    justifyContent: "space-between",
+    backgroundColor: colors.primary[400],
+  });
+
+  const DashboardPlotItem = styled(Box)({
+    gridColumn: "span 4",
+    maxWidth: "100%",
+    gridRow: "span 2",
     backgroundColor: colors.primary[400],
   });
 
@@ -67,6 +70,14 @@ export const Dashboard = () => {
     return (
       <Box m="20px">
         <Typography variant="h2">Please select a Run to analyse</Typography>
+      </Box>
+    );
+  }
+
+  if (!data) {
+    return (
+      <Box m="20px">
+        <Typography variant="h2">No data available.</Typography>
       </Box>
     );
   }
@@ -84,50 +95,24 @@ export const Dashboard = () => {
         gap="20px"
       >
         {/* Row number one (Cards) */}
-        <DashboardCardRow
-          display="flex"
-          alignItems="center"
-          justifyContent="space-around"
-        >
-          {data &&
-            Object.entries(data || {}).map(([key, value]) => {
+        <DashboardCardRow display="flex">
+          {!_.isEmpty(data.history) &&
+            Object.entries(data.history).map(([key, value]) => {
               return (
                 <StatCard title={key} value={value[value.length - 1].value} />
               );
             })}
         </DashboardCardRow>
         {/*Row number two */}
-        <DashboardPlotRow
-          display="flex"
-          alignItems="center"
-          justifyContent="left"
-        >
-          {dataset_metrics && (
-            <LineChart
-              isDashboard={false}
-              data={dataset_metrics.map(([key, value]) => {
-                return {
-                  id: key,
-                  data: value.map((u) => {
-                    return { x: u.step, y: u.value };
-                  }),
-                };
-              })}
-            />
-          )}
-          {performance_metrics && (
-            <LineChart
-              isDashboard={false}
-              data={performance_metrics.map(([key, value]) => {
-                return {
-                  id: key,
-                  data: value.map((u) => {
-                    return { x: u.step, y: u.value };
-                  }),
-                };
-              })}
-            />
-          )}
+        <DashboardPlotRow display="flex" alignItems="top" justifyContent="left">
+          {data.plots &&
+            data.plots.map((data) => {
+              return (
+                <DashboardPlotItem>
+                  <PlotWrapper props={data} isDashboard={false} />
+                </DashboardPlotItem>
+              );
+            })}
         </DashboardPlotRow>
       </Box>
     </Box>
