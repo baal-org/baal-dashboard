@@ -12,6 +12,7 @@ import { tokens } from "../../theme";
 import SelectorComponent from "../SelectorComponent";
 import RefreshDataComponent from "../RefreshDataComponent";
 import { styled } from "@mui/system";
+import Grid from "@mui/material/Grid";
 
 type ItemProps = {
   title: string;
@@ -57,9 +58,6 @@ const Sidebar = () => {
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
         },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-        },
         "& .pro-inner-item:hover": {
           color: "#868dfb",
         },
@@ -69,59 +67,62 @@ const Sidebar = () => {
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
-        <Menu iconShape="square">
-          <TopMenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-          >
-            {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                paddingLeft={isCollapsed ? undefined : "10%"}
-              >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  Baal Dashboard
-                </Typography>
+        <Grid item md="auto" lg="auto">
+          <Menu iconShape="square">
+            <TopMenuItem
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  paddingLeft={isCollapsed ? undefined : "10%"}
+                >
+                  <Typography variant="h3" color={colors.grey[100]}>
+                    Baal Dashboard
+                  </Typography>
 
-                <IconButton>
-                  <MenuOutlinedIcon />
-                </IconButton>
+                  <IconButton>
+                    <MenuOutlinedIcon />
+                  </IconButton>
+                </Box>
+              )}
+            </TopMenuItem>
+
+            {/* USER */}
+            {!isCollapsed && (
+              <Box mb="25px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    alt="Logo"
+                    width="100px"
+                    src={logo}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                </Box>
               </Box>
             )}
-          </TopMenuItem>
-          {/* USER */}
-          {!isCollapsed && (
-            <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="Logo"
-                  width="100px"
-                  src={logo}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box>
-            </Box>
-          )}
 
-          {/* Menu items */}
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <MenuItem icon={<BuildOutlinedIcon />}>
-              <SelectorComponent />
-            </MenuItem>
-            <MenuItem icon={<AccessTimeIcon />}>
-              <RefreshDataComponent />
-            </MenuItem>
-          </Box>
-        </Menu>
+            {/* Menu items */}
+            <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+              <Item
+                title="Dashboard"
+                to="/"
+                icon={<HomeOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+              <MenuItem icon={<BuildOutlinedIcon />}>
+                <SelectorComponent />
+              </MenuItem>
+              <MenuItem icon={<AccessTimeIcon />}>
+                <RefreshDataComponent />
+              </MenuItem>
+            </Box>
+          </Menu>
+        </Grid>
       </ProSidebar>
     </Box>
   );

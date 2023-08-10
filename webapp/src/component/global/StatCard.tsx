@@ -5,7 +5,7 @@ type StatCardProps = {
   value: number;
 };
 
-const StatCard = ({title, value }: StatCardProps) => {
+const StatCard = ({ title, value }: StatCardProps) => {
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardContent>

@@ -1,7 +1,6 @@
 import json
 import os
-from typing import List,Dict,Any
-from collections.abc import MutableMapping
+from typing import Any, Dict, List
 
 import mlflow
 from fastapi import FastAPI, HTTPException, Query
@@ -38,6 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/experimentsflat")
 def get_experimentsflat() -> List[Dict[str, Any]]:
     """
@@ -51,9 +51,12 @@ def get_experimentsflat() -> List[Dict[str, Any]]:
         exp_id = exp.exp_id
         runs = exp.runs
 
-        response_flat += [{"exp_id":exp_id,"run_id":run.run_id,"hparams":run.hparams} for run in runs]
+        response_flat += [
+            {"exp_id": exp_id, "run_id": run.run_id, "hparams": run.hparams} for run in runs
+        ]
 
     return response_flat
+
 
 @app.get("/experiments")
 def get_experiments() -> List[Experiment]:

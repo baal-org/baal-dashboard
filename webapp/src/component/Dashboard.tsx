@@ -8,17 +8,26 @@ import Header from "./global/Header";
 import PlotWrapper from "./global/PlotWrapper";
 import StatCard from "./global/StatCard";
 import _ from "lodash";
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Grid from "@mui/material/Grid";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import Button from "@mui/material/Button";
+import MobileStepper from "@mui/material/MobileStepper";
 
 export const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { runId, refreshInterval, runIdArr } = useConfigurationContext();
+  const { refreshInterval, runIdArr } = useConfigurationContext();
   const intervalId = useRef<any>(null);
+
+  // Swipeable views
+  const [activeStep, setActiveStep] = useState(0);
+  const [maxSteps, setmaxSteps] = useState(0);
 
   const { isLoading, isError, data, error, refetch } = useQuery({
     queryKey: ["metrics", runIdArr],
-    queryFn: () => fetchMetrics(runIdArr.join('--')),
+    queryFn: () => fetchMetrics(runIdArr.join("--")),
     enabled: runIdArr.length > 0,
     refetchOnWindowFocus: false,
   });
@@ -41,30 +50,15 @@ export const Dashboard = () => {
 
     return () => {
       clearInterval(intervalId.current);
+      setActiveStep(0);
     };
   }, [refreshInterval, runIdArr, refetch]);
 
-  const DashboardCardRow = styled(Box)({
-    gridColumn: "span 8",
-    backgroundColor: colors.primary[400],
-    gridGap: "5px",
-  });
-
-  const DashboardPlotRow = styled(Box)({
-    gridColumn: "span 8",
-    gridRow: "span 6",
-    flexFlow: "wrap",
-    alignContent: "baseline",
-    justifyContent: "space-between",
-    backgroundColor: colors.primary[400],
-  });
-
-  const DashboardPlotItem = styled(Box)({
-    gridColumn: "span 4",
-    maxWidth: "100%",
-    gridRow: "span 2",
-    backgroundColor: colors.primary[400],
-  });
+  useEffect(() => {
+    if (!isLoading && !isError && data && data.plots && data.plots.length > 0) {
+      setmaxSteps(data.plots.length);
+    }
+  }, [isLoading, isError, data]);
 
   if (isError || runIdArr.length == 0) {
     return (
@@ -82,55 +76,103 @@ export const Dashboard = () => {
     );
   }
 
-  console.log(data)
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   return (
-    <Box m="20px">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Baal Dashboard" subtitle={`Run Id: ${runId}`} />
-      </Box>
+    <Box sx={{ width: "100%" }}>
+      <Grid container>
+        <Grid container>
+          <Grid item sm={12} md={12} lg={12}>
+            <Header
+              title="Baal Dashboard"
+              subtitle={`Run Id: ${runIdArr.join(",")}`}
+            />
+          </Grid>
+        </Grid>
 
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* Row number one (Cards) */}
-        {/* <DashboardCardRow display="flex">
-          {!_.isEmpty(data.history) &&
-            Object.entries(data.history).map(([key, value]) => {
-              return (
-                <StatCard title={key} value={value[value.length - 1].value} />
-              );
-            })}
-        </DashboardCardRow> */}
-        <DashboardCardRow display="flex">
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          {/* Row number one (Cards) */}
           {!_.isEmpty(data.history) &&
             Object.entries(data.history).flatMap(([experimentId, metrics]) => {
-              return Object.entries(metrics).map(([metricName, metricValues]) => {
-                const latestMetricValue = metricValues[metricValues.length - 1].value;
-                return (
-                  <StatCard
-                    title={experimentId + ' - ' + metricName} // Display experiment ID and metric name
-                    value={latestMetricValue}
-                  />
-                );
-              });
-            })}
-        </DashboardCardRow>
-        {/*Row number two */}
-        <DashboardPlotRow display="flex" alignItems="top" justifyContent="left">
-          {data.plots &&
-            data.plots.map((data) => {
-              return (
-                <DashboardPlotItem>
-                  <PlotWrapper props={data} isDashboard={false} />
-                </DashboardPlotItem>
+              return Object.entries(metrics).map(
+                ([metricName, metricValues]) => {
+                  const latestMetricValue =
+                    metricValues[metricValues.length - 1].value;
+                  const uniqueKey = `${experimentId}-${metricName}`;
+                  return (
+                    <Grid item key={uniqueKey} sm={3} md={4} lg={4}>
+                      <StatCard
+                        title={uniqueKey} // Display experiment ID and metric name
+                        value={latestMetricValue}
+                      />
+                    </Grid>
+                  );
+                },
               );
             })}
-        </DashboardPlotRow>
-      </Box>
+        </Grid>
+
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item sm={12} md={6} lg={6}>
+            <PlotWrapper props={data.plots[activeStep]} isDashboard={false} />
+
+            <MobileStepper
+              variant="text"
+              steps={maxSteps}
+              position="static"
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  disabled={activeStep === maxSteps - 1}
+                  color="secondary"
+                >
+                  Next
+                  {theme.direction === "rtl" ? (
+                    <KeyboardArrowLeft />
+                  ) : (
+                    <KeyboardArrowRight />
+                  )}
+                </Button>
+              }
+              backButton={
+                <Button
+                  size="small"
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                  color="secondary"
+                >
+                  {theme.direction === "rtl" ? (
+                    <KeyboardArrowRight />
+                  ) : (
+                    <KeyboardArrowLeft />
+                  )}
+                  Back
+                </Button>
+              }
+            />
+          </Grid>
+        </Grid>
+
+        {/* </Grid> */}
+      </Grid>
     </Box>
   );
 };

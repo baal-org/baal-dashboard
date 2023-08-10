@@ -9,7 +9,7 @@ class Metric(BaseModel):
 
 
 Plot = Dict  # Result of PlotlyFigure.to_json()
-History = Dict[str,Dict[str, List[Metric]]]
+History = Dict[str, Dict[str, List[Metric]]]
 
 
 class GetMetricsResponse(BaseModel):
