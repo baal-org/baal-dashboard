@@ -1,5 +1,4 @@
 import React from "react";
-import ConfigSelector from "./ConfigSelector";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -31,7 +30,6 @@ import { useConfigurationContext } from "../context/Configuration";
 export default function SelectorComponent() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { setRunId } = useConfigurationContext();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -47,13 +45,6 @@ export default function SelectorComponent() {
     boxShadow: 24,
     p: 4,
   };
-
-  async function handleSelect(selectedOption: {
-    value: string;
-    label: string;
-  }) {
-    setRunId(selectedOption.value);
-  }
 
   return (
     <div>
@@ -75,9 +66,7 @@ export default function SelectorComponent() {
           >
             Select a configuration
           </Typography>
-          <Box id="modal-modal-description" sx={{ mt: 2 }}>
-            <ConfigSelector onSelect={handleSelect} />
-          </Box>
+          <Box id="modal-modal-description" sx={{ mt: 2 }}></Box>
         </Box>
       </Modal>
     </div>

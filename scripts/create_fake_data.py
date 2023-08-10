@@ -1,10 +1,11 @@
 import argparse
 import os
 import random
+import time
+import uuid
 
 import mlflow
 import numpy as np
-import time
 
 from baal_dashboard.tracking import TrackingStep
 
@@ -20,8 +21,9 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--steps", default=100)
     parser.add_argument("--query_size", default=15)
-    parser.add_argument("--metrics", default=["accuracy", "f1"])
+    parser.add_argument("--metrics", nargs="+", default=["accuracy", "f1"])
     parser.add_argument("--delay", default=0)
+    parser.add_argument("--expid", default=None)
     return parser.parse_args()
 
 
@@ -31,9 +33,10 @@ def gen_metrics(metric_names):
 
 def main(args):
     client = mlflow.MlflowClient()
-    if not (exp := client.get_experiment_by_name("experiment")):
-        client.create_experiment("experiment")
-        exp = client.get_experiment_by_name("experiment")
+    if exp := client.get_experiment(args.expid):
+        experiment_name = uuid.uuid4().bytes.decode("latin-1")
+        client.create_experiment(experiment_name)
+        exp = client.get_experiment_by_name(experiment_name)
     run = client.create_run(exp.experiment_id)
 
     # Log HParams (TODO Add this to baal itself)

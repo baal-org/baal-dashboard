@@ -5,7 +5,9 @@ import TopBar from "./component/global/TopBar";
 import { ColorModeContext, useMode } from "./theme";
 import { ConfigurationProvider } from "./context/Configuration";
 import { Dashboard } from "./component/Dashboard";
+import { ExperimentTable } from "./component/ExperimentTable";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Grid from "@mui/material/Grid";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -16,13 +18,16 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
           <ConfigurationProvider>
-            <div className="app">
-              <Sidebar />
-              <main className="content">
-                <TopBar />
-                <Dashboard />
-              </main>
-            </div>
+            <Grid container width="100%">
+              <div className="app">
+                <Sidebar />
+                <main className="content">
+                  <TopBar />
+                  <Dashboard />
+                  <ExperimentTable />
+                </main>
+              </div>
+            </Grid>
           </ConfigurationProvider>
         </QueryClientProvider>
       </ThemeProvider>

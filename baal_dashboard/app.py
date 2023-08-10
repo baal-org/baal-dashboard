@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List
+from typing import Any, Dict, List
 
 import mlflow
 from fastapi import FastAPI, HTTPException, Query
@@ -38,6 +38,26 @@ app.add_middleware(
 )
 
 
+@app.get("/experimentsflat")
+def get_experimentsflat() -> List[Dict[str, Any]]:
+    """
+    Return a flattened list of experiments and runs
+    """
+    response_flat = []
+
+    experiments = get_experiments()
+
+    for exp in experiments:
+        exp_id = exp.exp_id
+        runs = exp.runs
+
+        response_flat += [
+            {"exp_id": exp_id, "run_id": run.run_id, "hparams": run.hparams} for run in runs
+        ]
+
+    return response_flat
+
+
 @app.get("/experiments")
 def get_experiments() -> List[Experiment]:
     """
@@ -69,16 +89,20 @@ def get_experiments() -> List[Experiment]:
 
 @app.get("/metric/{run_id}")
 def get_metrics(run_id: str, with_plots: bool = Query(False)) -> GetMetricsResponse:
-    try:
-        run = mlflow.get_run(run_id)
-    except MlflowException:
-        raise HTTPException(status_code=404, detail="Not found")
-    all_metrics_names = list(run.data.metrics.keys())
-    print(all_metrics_names)
-    history = {
-        mn: [Metric(step=m.step, value=m.value) for m in client.get_metric_history(run_id, mn)]
-        for mn in all_metrics_names
-    }
+    history = {}
+
+    for id in run_id.split("--"):
+        try:
+            run = mlflow.get_run(id)
+        except MlflowException:
+            raise HTTPException(status_code=404, detail="Not found")
+        all_metrics_names = list(run.data.metrics.keys())
+        print(all_metrics_names)
+        history[id] = {
+            mn: [Metric(step=m.step, value=m.value) for m in client.get_metric_history(id, mn)]
+            for mn in all_metrics_names
+        }
+
     if with_plots:
         plots = create_plots(history)
     else:
